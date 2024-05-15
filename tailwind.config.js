@@ -122,5 +122,7 @@ export default {
         }}
     ],
   },
-  plugins: [require("daisyui")],
+    darkMode: ['class', '[data-theme="dark"]', '[data-theme="darkpurple"]', '[data-theme="red"]', '[data-theme="bluebeard"]', '[data-theme="darksoul"]'],
+    lightMode: ['class', '[data-theme="light"]'],
+    plugins: [require("daisyui")],
 }

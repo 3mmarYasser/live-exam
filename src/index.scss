@@ -1,7 +1,7 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 body {
   margin: 0;
@@ -32,4 +32,100 @@ body {
 ::selection {
   background-color: hsl(var(--pf, var(--p)) / 0.12);
   color: hsl(var(--p));
+}
+.form-input{
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-b1,oklch(var(--bc)/0.2));
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  width: 100%;
+  border-radius: .375rem;
+  border-width: 1px;
+  padding: .5rem 1rem;
+  font-size: .875rem;
+  line-height: 1.25rem;
+  font-weight: 600;
+  outline: 2px solid transparent !important;
+  outline-offset: 2px !important;
+  -moz-appearance: none;
+  appearance: none;
+  --tw-shadow: 0 0 #0000;
+  padding-inline-start: 2.5rem;
+  &:focus {
+    --tw-border-opacity: 1;
+    border-color: var(--fallback-b1,oklch(var(--p)));
+    --tw-shadow: 0 0 0 3px var(--fallback-b1,oklch(var(--p)));
+  }
+}
+
+@media (min-width: 1280px) {
+  .ltr\:xl\:-right-20:where([dir="ltr"],[dir="ltr"] *) {
+    right: -5rem;
+  }
+}
+.ltr\:bg-gradient-to-r:where([dir="ltr"],[dir="ltr"] *) {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+.ltr\:-right-10:where([dir="ltr"],[dir="ltr"] *) {
+  right: -2.5rem;
+}
+@media (min-width: 1280px) {
+  .xl\:w-16 {
+    width: 4rem;
+  }
+}
+.to-transparent {
+  --tw-gradient-to: transparent var(--tw-gradient-to-position);
+}
+.via-transparent {
+  --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), transparent var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+.from-primary\/10 {
+  --tw-gradient-from: rgb(67 97 238 / .1) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(67 97 238 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+@media (min-width: 1280px) {
+  .ltr\:xl\:skew-x-\[14deg\]:where([dir="ltr"],[dir="ltr"] *) {
+    --tw-skew-x: 14deg;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skew(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+}
+@media (min-width: 1280px) {
+  .ltr\:xl\:-right-20:where([dir="ltr"],[dir="ltr"] *) {
+    right: -5rem;
+  }
+}
+.ltr\:bg-gradient-to-r:where([dir="ltr"],[dir="ltr"] *) {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+.ltr\:-right-10:where([dir="ltr"],[dir="ltr"] *) {
+  right: -2.5rem;
+}
+@media (min-width: 1280px) {
+  .ltr\:xl\:skew-x-\[14deg\]:where([dir="ltr"],[dir="ltr"] *) {
+    --tw-skew-x: 14deg;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skew(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+}
+.from-primary\/10 {
+  --tw-gradient-from: rgb(67 97 238 / .1) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(67 97 238 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.btn-gradient {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  --tw-gradient-from: #EF1262 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(239 18 98 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+  --tw-gradient-to: #4361EE var(--tw-gradient-to-position);
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.shadow-\[0_10px_20px_-10px_rgba\(67\,97\,238\,0\.44\)\] {
+  --tw-shadow: 0 10px 20px -10px rgba(67,97,238,.44);
+  --tw-shadow-colored: 0 10px 20px -10px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
