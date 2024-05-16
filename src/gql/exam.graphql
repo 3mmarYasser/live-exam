@@ -1,0 +1,13 @@
+query GetExam{
+    get_exams(pagination: {page: 1, limit: 10}){
+        id
+        title
+        questions {
+            answers
+            question
+            correct_answer
+            grade
+        }
+
+    }
+}

@@ -150,11 +150,12 @@ function Core({
                 }
             }
 
-            return (<div key={nanoid()}>
+            return (<div key={nanoid()} className="my-1">
                 <button
                     type="button"
                     disabled
-                    className={`answerBtn btn ${answerBtnCorrectClassName}${answerBtnIncorrectClassName}`}
+                    className={`                                        group relative flex cursor-pointer rounded-lg bg-base-100 py-4 px-5 text-base-content shadow-md transition focus:outline-none 
+ ${answerBtnCorrectClassName}${answerBtnIncorrectClassName}`}
                 >
                     {questionType === 'text' && <span>{answer}</span>}
                     {questionType === 'photo' && <img src={answer} alt="answer"/>}
@@ -360,7 +361,7 @@ function Core({
         const renderedAnswers = answers.map((answer, index) =>
             (<Fragment key={nanoid()}>
                 {(answerButtons[index] !== undefined) ? (<button
-                    type="button"S
+                    type="button"
                     disabled={answerButtons[index].disabled || false}
                     className={` ${answerButtons[index].className}
                                         group relative flex cursor-pointer rounded-lg bg-base-300 py-4 px-5 text-base-content shadow-md transition focus:outline-none 
@@ -387,9 +388,10 @@ function Core({
         <div className="w-full container mx-auto flex flex-col items-center justify-center mt-9 px-8">
             <div className="flex w-full items-center justify-between">
                 <h1 className="text-xl font-[400]">{quiz.quizTitle}</h1>
-                <div className=" h-3 rounded-full bg-gray-200 w-full max-w-[30rem]">
-                    <div className="h-2 rounded-full bg-orange-500 transition-all duration-300" style={{width:`${((currentQuestionIndex ) / questions.length) * 100}%`}}></div>
-                </div>
+                {isRunning && <div className=" h-3 rounded-full bg-gray-200 w-full max-w-[30rem]">
+                    <div className="h-2 rounded-full bg-orange-500 transition-all duration-300"
+                         style={{width: `${((currentQuestionIndex) / questions.length) * 100}%`}}></div>
+                </div>}
                 {timer && isRunning && (<div>
                     {appLocale.timerTimeRemaining}
                     :

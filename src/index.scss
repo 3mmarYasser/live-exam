@@ -28,10 +28,10 @@ body {
 ::-webkit-scrollbar-thumb {
   --tw-text-opacity: 1;
   border-radius: 3px;
-  background-color: hsl(var(--p) / var(--tw-text-opacity));
+  background-color:var(--fallback-b1,oklch(var(--p)));
 }
 ::selection {
-  background-color: hsl(var(--pf, var(--p)) / 0.12);
+  background-color: var(--fallback-b1,oklch(var(--pf)/0.12));
   color: hsl(var(--p));
 }
 .form-input{

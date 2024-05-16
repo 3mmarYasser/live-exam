@@ -1,6 +1,9 @@
 import React from 'react';
 import Quiz from "./components/Quiz.tsx";
-export const quiz =  {
+import ProtectedRoute from "../../components/ProtectedRoute/ProtectedRoute.component.tsx";
+import {useGetExamQuery} from "../../graphql/generated/graphql.tsx";
+import useDidMountEffect from "../../hooks/useDidMountEffect/useDidMountEffect.hook.tsx";
+ const quiz =  {
     "quizTitle": "React Quiz Component Demo",
     "quizSynopsis": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim",
     "nrOfQuestions": "4",
@@ -16,7 +19,7 @@ export const quiz =  {
                 "this.state",
                 "this.values"
             ],
-            "correctAnswer": "3",
+            "correctAnswer": "this.getState()",
             "messageForCorrectAnswer": "Correct answer. Good job.",
             "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
             "explanation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -30,7 +33,7 @@ export const quiz =  {
                 "Google Engineers",
                 "Facebook Engineers"
             ],
-            "correctAnswer": "2",
+            "correctAnswer": "Google Engineers",
             "messageForCorrectAnswer": "Correct answer. Good job.",
             "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
             "explanation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -44,7 +47,7 @@ export const quiz =  {
                 "True",
                 "False"
             ],
-            "correctAnswer": "2",
+            "correctAnswer": "True",
             "messageForCorrectAnswer": "Correct answer. Good job.",
             "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
             "explanation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -59,51 +62,50 @@ export const quiz =  {
                 "Event delegation model",
                 "Both of the above",
             ],
-            "correctAnswer": "3",
+            "correctAnswer": "Event delegation model",
             "messageForCorrectAnswer": "Correct answer. Good job.",
             "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
             "explanation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
             "point": "30"
         },
-        {
-            "question": "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
-            "questionType": "photo",
-            "answerSelectionType": "single",
-            "answers": [
-                "https://dummyimage.com/600x400/000/fff&text=A",
-                "https://dummyimage.com/600x400/000/fff&text=B",
-                "https://dummyimage.com/600x400/000/fff&text=C",
-                "https://dummyimage.com/600x400/000/fff&text=D"
-            ],
-            "correctAnswer": "1",
-            "messageForCorrectAnswer": "Correct answer. Good job.",
-            "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
-            "explanation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            "point": "20"
-        },
-        {
-            "question": "What are the advantages of React JS?",
-            "questionType": "text",
-            "answerSelectionType": "multiple",
-            "answers": [
-                "React can be used on client and as well as server side too",
-                "Using React increases readability and makes maintainability easier. Component, Data patterns improves readability and thus makes it easier for manitaining larger apps",
-                "React components have lifecycle events that fall into State/Property Updates",
-                "React can be used with any other framework (Backbone.js, Angular.js) as it is only a view layer"
-            ],
-            "correctAnswer": [1, 2, 4],
-            "messageForCorrectAnswer": "Correct answer. Good job.",
-            "messageForIncorrectAnswer": "Incorrect answer. Please try again.",
-            "explanation": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-            "point": "20"
-        },
     ]
 }
+
+
+ console.log(quiz);
 const QuizPage = () => {
+    const {data,loading,error}= useGetExamQuery();
+    useDidMountEffect(()=>{
+        if(data.get_exams[0]){
+            quiz.quizTitle = data.get_exams[0].title;
+            quiz.nrOfQuestions = `${data.get_exams[0].questions.length}`;
+            quiz.questions = data.get_exams[0].questions.map((question)=>{
+                return {
+                    question:question.question,
+                    questionType:"text",
+                    answerSelectionType:"single",
+                    answers:question.answers.map((answer)=>answer),
+                    correctAnswer:question.correct_answer,
+                    messageForCorrectAnswer:"Correct answer. Good job.",
+                    messageForIncorrectAnswer:"Incorrect answer. Please try again.",
+                    explanation:"No",
+                    point:`${question.grade}`
+                }
+            });
+            quiz.questions.forEach(question => {
+                const correctAnswerIndex = question.answers.findIndex(answer => answer === question.correctAnswer);
+                question.correctAnswer = `${correctAnswerIndex+1}`;
+            });
+        }
+        console.log(quiz)
+    },[data,loading,error])
     return (
-        <>
-            <Quiz quiz={quiz} timer={1200} />
-        </>
+        <ProtectedRoute>
+            <Quiz quiz={quiz} timer={1200} onComplete={(values)=>{
+                console.log(values)
+                window.localStorage.setItem("quizResult", JSON.stringify(values))
+            }} />
+        </ProtectedRoute>
     );
 };
 

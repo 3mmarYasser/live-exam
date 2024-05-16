@@ -3,6 +3,10 @@ import Core from './Core.quiz';
 import defaultLocale from './Locale';
 import {MdInfo, MdTimer} from "react-icons/md";
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../store";
+import {IoCheckmarkDoneCircleSharp} from "react-icons/io5";
+const quizResultLocale = JSON.parse(localStorage.getItem('quizResult'));
 
 interface Props {
     quiz: any;
@@ -19,6 +23,7 @@ interface Props {
     disableSynopsis?: boolean;
     timer: number;
     allowPauseTimer?: boolean;
+    userName?: string;
 
 }
 const  QuizComponent:React.FC<Props> = ({
@@ -36,6 +41,7 @@ const  QuizComponent:React.FC<Props> = ({
                   disableSynopsis,
                   timer,
                   allowPauseTimer,
+                                            userName="Ammar"
               })=> {
 
     const [start, setStart] = useState(false);
@@ -204,13 +210,13 @@ const  QuizComponent:React.FC<Props> = ({
         ...defaultLocale,
         ...quiz.appLocale,
     };
-
+    const {user} = useSelector((state:RootState)=>state.auth)
     return (
         <div className="min-h-screen  flex  ">
             {!start && (
                 <div className="flex w-full  px-8 justify-between items-center ">
                     <div className="flex w-full lg:w-1/2 flex-col gap-8">
-                        <h1 className="text-5xl font-medium text-base-content/50 ">Hi, <span className="text-primary">Ammar</span></h1>
+                        <h1 className="text-5xl font-medium text-base-content/50 ">Hi, <span className="text-primary">{user.name}</span></h1>
                         <div>
                             <h4 className="text-3xl text-base-content/50 mb-3">Topic</h4>
                             <h2 className="text-3xl">{quiz.quizTitle}</h2>
@@ -238,9 +244,18 @@ const  QuizComponent:React.FC<Props> = ({
                                 <div className="">{quiz.quizSynopsis}</div>
                             )}
                         </p>
+                        {!!quizResultLocale&&(
+                            <div className="text-lg text-base-content/70 flex gap-2 items-center">
+                                Your Grade is
+                                <p>{quizResultLocale.correctPoints} / {quizResultLocale.totalPoints}</p>
+                                <IoCheckmarkDoneCircleSharp className="text-xl text-success" />
+
+                            </div>
+
+                        )}
                         <div className="">
-                            <button type="button" onClick={() => setStart(true)} className="btn btn-wide btn-primary">
-                                {appLocale.startQuizBtn}
+                            <button type="button" disabled={!!quizResultLocale} onClick={() => setStart(true)} className="btn btn-wide btn-primary">
+                                {!quizResultLocale ? appLocale.startQuizBtn :"You have Already Taken this Quiz"}
                             </button>
                         </div>
                     </div>
