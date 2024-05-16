@@ -2,6 +2,7 @@ import React, {Suspense} from 'react'
 import './App.scss'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Login from "../pages/Auth/login.page.tsx";
+import QuizPage from "../pages/Quiz/Quiz.page.tsx";
 
 const App:React.FC =()=>{
     return (
@@ -13,6 +14,7 @@ const App:React.FC =()=>{
 
                         <Routes>
                             <Route path="/" element={<Login/>}/>
+                            <Route path="/quiz" element={<QuizPage/>}/>
                         </Routes>
                     </main>
                 </Suspense>

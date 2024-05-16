@@ -2,11 +2,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 body {
   margin: 0;
-  font-family:'Cairo', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family:"Roboto", sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -117,15 +118,25 @@ body {
 }
 .btn-gradient {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
-  --tw-gradient-from: #EF1262 var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(239 18 98 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-from:  var(--fallback-b1,oklch(var(--s)/var(--tw-bg-opacity))) var(--tw-gradient-from-position);
+  --tw-gradient-to:  var(--fallback-b1,oklch(var(--n)/var(--tw-bg-opacity))) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
-  --tw-gradient-to: #4361EE var(--tw-gradient-to-position);
+  --tw-gradient-to:  var(--fallback-b1,oklch(var(--p)/var(--tw-bg-opacity))) var(--tw-gradient-to-position);
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .shadow-\[0_10px_20px_-10px_rgba\(67\,97\,238\,0\.44\)\] {
-  --tw-shadow: 0 10px 20px -10px rgba(67,97,238,.44);
+  --tw-shadow: 0 10px 20px -10px  var(--fallback-b1,oklch(var(--p)/var(--tw-bg-opacity)));
   --tw-shadow-colored: 0 10px 20px -10px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+[data-theme]:not([data-theme="light"]) .x-bg-base-100 {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+}
+.correct{
+  background-color:var(--fallback-b1,oklch(var(--su)/var(--tw-bg-opacity))) var(--tw-gradient-from-position); ;
+}
+.incorrect{
+  background-color:var(--fallback-b1,oklch(var(--er)/var(--tw-bg-opacity))) var(--tw-gradient-from-position); ;
 }

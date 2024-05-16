@@ -14,7 +14,7 @@ const Login: React.FC = () => {
                              alt="image"
                              className="h-full w-full object-cover"/>
                     </div>
-                    <div className="relative flex min-h-screen items-center justify-center bg-[url(https://react.vristo.sbthemes.com/assets/images/auth/map.png)] bg-cover bg-center bg-no-repeat dark:bg-base-100 px-6 py-10  sm:px-16">
+                    <div className="relative flex min-h-screen items-center justify-center bg-[url(https://react.vristo.sbthemes.com/assets/images/auth/map.png)] bg-cover bg-center bg-no-repeat x-bg-base-100 px-6 py-10  sm:px-16">
                         <img src="https://react.vristo.sbthemes.com/assets/images/auth/coming-soon-object1.png"
                              alt="image" className="absolute left-0 top-1/2 h-full max-h-[893px] -translate-y-1/2"/>
 
