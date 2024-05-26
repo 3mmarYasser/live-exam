@@ -17,7 +17,10 @@ const ProtectedRoute:React.FC<Props> = ({children}) => {
         }
     },[])
     if(isLoading) return <h1 className="mt-40">Loading</h1>
-    return isLoginIn? children: <Navigate to="/" replace={true}/> ;
+    return isLoginIn? children:
+        // children
+         <Navigate to="/" replace={true}/>;
+
 
 };
 

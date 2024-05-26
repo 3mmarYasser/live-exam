@@ -1,13 +1,49 @@
-query GetExam{
-    get_exams(pagination: {page: 1, limit: 10}){
-        id
+query GetExamById($id: Int!) {
+    get_exam(id: $id){
         title
         questions {
             answers
             question
             correct_answer
             grade
+            id
         }
+        duration
+    }
+}
+query GetExams {
+    get_exams(pagination: {page: 1, limit: 10}){
+        id
+        title
 
+    }
+}
+query GetSession($id: Float!) {
+    get_exam_session(id: $id){
+        exam_id
+        status
+
+    }
+}
+mutation startExam($exam_id: Float!) {
+    start_exam_session(exam_id: $exam_id){
+        exam_id
+        id
+
+    }
+}
+mutation endExam($exam_id: Float!) {
+    end_exam_session(exam_session_id: $exam_id){
+        exam_id
+    }
+}
+mutation submitAnswer($exam_session_id: Float!, $question_id: Float!, $answer: String!) {
+    submit_answer(exam_session_id: $exam_session_id , answerInput: {answer: $answer ,question_id: $question_id ,exam_id: $exam_session_id} ,){
+        id
+    }
+}
+query getExamPioneers($exam_id: Float!){
+    my_exam_pioneers(exam_id: $exam_id){
+        id
     }
 }

@@ -140,3 +140,6 @@ body {
 .incorrect{
   background-color:var(--fallback-b1,oklch(var(--er)/var(--tw-bg-opacity))) var(--tw-gradient-from-position); ;
 }
+.selected{
+  background-color:var(--fallback-b1,oklch(var(--p)/var(--tw-bg-opacity))) var(--tw-gradient-from-position) !important;
+}

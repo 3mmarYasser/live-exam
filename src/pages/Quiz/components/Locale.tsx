@@ -1,4 +1,6 @@
-const defaultLocale = {
+import {Locale} from "../Quiz.interface.ts";
+
+const defaultLocale:Locale = {
     landingHeaderText: '<questionLength> Questions',
     question: 'Question',
     startQuizBtn: 'Start Test',
@@ -19,6 +21,7 @@ const defaultLocale = {
     multipleSelectionTagText: 'Multiple Selection',
     pickNumberOfSelection: 'Pick <numberOfSelection>',
     marksOfQuestion: '(<marks> marks)',
+    explanation: 'Explanation',
 };
 
 export default defaultLocale;

@@ -9,7 +9,7 @@ interface Props {
 const UnAuthorizedRoute:React.FC<Props> = ({children}) => {
     const {isLoginIn , isLoading} = useSelector((state:RootState)=>state.auth)
     if(isLoading) return <h1 className="mt-40">Loading</h1>
-    else return isLoginIn? <Navigate to="/quiz" replace={true}/> : children;
+    else return isLoginIn? <Navigate to="/student" replace={true}/> : children;
 
 };
 

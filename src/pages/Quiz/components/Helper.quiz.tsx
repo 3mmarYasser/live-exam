@@ -22,6 +22,7 @@ export const checkAnswer = (index, correctAnswer, answerSelectionType, answers, 
     setShowNextQuestionButton,
     setUserInput,
     setUserAttempt,
+    revealAnswerOnSubmit
 }) => {
     const indexStr = `${index}`;
     const disabledAll = Object.keys(answers).map(() => ({ disabled: true }));
@@ -63,7 +64,7 @@ export const checkAnswer = (index, correctAnswer, answerSelectionType, answers, 
                         },
                     }
                 ));
-            } else {
+            } else if (revealAnswerOnSubmit){
                 setButtons((prevState) => (
                     {
 
@@ -71,6 +72,19 @@ export const checkAnswer = (index, correctAnswer, answerSelectionType, answers, 
                         ...disabledAll,
                         [index - 1]: {
                             className: (indexStr === correctAnswer) ? 'correct' : 'incorrect',
+                        },
+                    }
+                ));
+
+                setShowNextQuestionButton(true);
+            }else {
+                setButtons((prevState) => (
+                    {
+
+                        ...prevState,
+                        ...disabledAll,
+                        [index - 1]: {
+                            className:  'selected',
                         },
                     }
                 ));

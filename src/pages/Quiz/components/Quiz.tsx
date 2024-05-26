@@ -2,29 +2,32 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Core from './Core.quiz';
 import defaultLocale from './Locale';
 import {MdInfo, MdTimer} from "react-icons/md";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store";
-import {IoCheckmarkDoneCircleSharp} from "react-icons/io5";
-const quizResultLocale = JSON.parse(localStorage.getItem('quizResult'));
+import {IoCheckmarkDoneCircleSharp, IoChevronBackOutline} from "react-icons/io5";
+import {onCompleteType, onQuestionSubmitType, QuestionSummary, Quiz} from "../Quiz.interface.ts";
+import useDidMountEffect from "../../../hooks/useDidMountEffect/useDidMountEffect.hook.tsx";
+
 
 interface Props {
-    quiz: any;
+    quiz: Quiz;
     shuffle?: boolean;
     shuffleAnswer?: boolean;
     showDefaultResult?: boolean;
-    onComplete?: (obj: any) => void;
+    onComplete?: onCompleteType;
     customResultPage?: React.FC;
     showInstantFeedback?: boolean;
     continueTillCorrect?: boolean;
     revealAnswerOnSubmit?: boolean;
     allowNavigation?: boolean;
-    onQuestionSubmit?: (obj: any) => void;
+    onQuestionSubmit?:onQuestionSubmitType;
     disableSynopsis?: boolean;
     timer: number;
     allowPauseTimer?: boolean;
-    userName?: string;
-
+    isTaken?: boolean;
+    startExam : (start:boolean)=>void
+    endExam : (end:boolean)=>void
 }
 const  QuizComponent:React.FC<Props> = ({
                   quiz,
@@ -41,8 +44,12 @@ const  QuizComponent:React.FC<Props> = ({
                   disableSynopsis,
                   timer,
                   allowPauseTimer,
-                                            userName="Ammar"
+    startExam,
+    endExam,
+
+    isTaken = false
               })=> {
+    const {user} = useSelector((state:RootState)=>state.auth)
 
     const [start, setStart] = useState(false);
     const [questions, setQuestions] = useState(quiz.questions);
@@ -50,7 +57,11 @@ const  QuizComponent:React.FC<Props> = ({
         ? quiz.nrOfQuestions
         : quiz.questions.length;
 
-    // Shuffle answers funtion here
+    useDidMountEffect(()=>{
+        if(start){
+            startExam(true)
+        }
+    },[start])
     const shuffleAnswerSequence = (oldQuestions = []) => {
         const newQuestions = oldQuestions.map((question) => {
             const answerWithIndex = question.answers?.map((ans, i) => [ans, i]);
@@ -183,7 +194,7 @@ const  QuizComponent:React.FC<Props> = ({
 
             if (
                 selectType === 'single'
-                && !(typeof selectType === 'string' || selectType instanceof String)
+                && !(typeof selectType === 'string')
             ) {
                 console.error(
                     'answerSelectionType is single but expecting String in the field correctAnswer',
@@ -207,74 +218,74 @@ const  QuizComponent:React.FC<Props> = ({
     }
 
     const appLocale = {
-        ...defaultLocale,
-        ...quiz.appLocale,
+        ...defaultLocale
     };
-    const {user} = useSelector((state:RootState)=>state.auth)
     return (
-        <div className="min-h-screen  flex  ">
+        <div className="min-h-screen flex  relative">
+
             {!start && (
-                <div className="flex w-full  px-8 justify-between items-center ">
-                    <div className="flex w-full lg:w-1/2 flex-col gap-8">
-                        <h1 className="text-5xl font-medium text-base-content/50 ">Hi, <span className="text-primary">{user.name}</span></h1>
-                        <div>
-                            <h4 className="text-3xl text-base-content/50 mb-3">Topic</h4>
-                            <h2 className="text-3xl">{quiz.quizTitle}</h2>
-                        </div>
-                        <div>
-                            <div className="flex items-center gap-2">
-                                <MdInfo className="text-2xl text-primary"/>
-                                <span className="text-xl font-[400]">
+                <>
+                    <Link to="/student" className="btn btn-circle btn-ghost m-5 absolute top-0 left-0">
+                        <IoChevronBackOutline className="text-xl" />
+
+                    </Link>
+
+                    <div className="flex w-full  px-8 justify-between items-center ">
+                        <div className="flex w-full lg:w-1/2 flex-col gap-8">
+                            <h1 className="text-5xl font-medium text-base-content/50 ">Hi, <span
+                                className="text-primary">{user?.name ?? "UnKnown"}</span></h1>
+                            <div>
+                                <h4 className="text-3xl text-base-content/50 mb-3">Topic</h4>
+                                <h2 className="text-3xl">{quiz.quizTitle}</h2>
+                            </div>
+                            <div>
+                                <div className="flex items-center gap-2">
+                                    <MdInfo className="text-2xl text-primary"/>
+                                    <span className="text-xl font-[400]">
                                     {appLocale.landingHeaderText.replace(
-                                    '<questionLength>',
-                                    ('0' + nrOfQuestions).slice(-2),
-                                )}
+                                        '<questionLength>',
+                                        ('0' + nrOfQuestions).slice(-2),
+                                    )}
                                 </span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <MdTimer className="text-2xl text-primary"/>
-                                <span className="text-xl font-[400]">
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <MdTimer className="text-2xl text-primary"/>
+                                    <span className="text-xl font-[400]">
                                 {('0' + timer / 60).slice(-2)}
-                                    Min.
+                                        Min.
                                 </span>
+                                </div>
+                            </div>
+                            <p className="text-lg text-base-content/70">
+                                {quiz.quizSynopsis && (
+                                    <div className="">{quiz.quizSynopsis}</div>
+                                )}
+                            </p>
+
+                            <div className="">
+                                <button type="button" disabled={isTaken} onClick={() => setStart(true)}
+                                        className="btn btn-wide btn-primary">
+                                    {!isTaken ? appLocale.startQuizBtn : "You have Already Taken this Quiz"}
+                                </button>
                             </div>
                         </div>
-                        <p className="text-lg text-base-content/70">
-                            {quiz.quizSynopsis && (
-                                <div className="">{quiz.quizSynopsis}</div>
-                            )}
-                        </p>
-                        {!!quizResultLocale&&(
-                            <div className="text-lg text-base-content/70 flex gap-2 items-center">
-                                Your Grade is
-                                <p>{quizResultLocale.correctPoints} / {quizResultLocale.totalPoints}</p>
-                                <IoCheckmarkDoneCircleSharp className="text-xl text-success" />
 
-                            </div>
+                        <div className="hidden w-1/2 lg:flex flex-col gap-2 items-center justify-center">
 
-                        )}
-                        <div className="">
-                            <button type="button" disabled={!!quizResultLocale} onClick={() => setStart(true)} className="btn btn-wide btn-primary">
-                                {!quizResultLocale ? appLocale.startQuizBtn :"You have Already Taken this Quiz"}
-                            </button>
+                            <Link className="w-40  block  ms-28" to={"/"}>
+                                <img src="https://muc.edu.eg/assets/img/logo.png"
+                                     alt="Logo" className="w-full"/></Link>
+                            <h1 className="text-3xl font-medium text-base-content/50 uppercase">
+                                Online Tests
+                            </h1>
+
+                            <div className=" hidden w-full max-w-md lg:block"><img
+                                src="https://izzardink.com/wp-content/uploads/2024/01/clipboard-notepad-as-time-management-instruments-sm-1.png"
+                                alt="Cover Image"
+                                className="w-full"/></div>
                         </div>
                     </div>
-
-                    <div className="hidden w-1/2 lg:flex flex-col gap-2 items-center justify-center">
-
-                        <Link className="w-40  block  ms-28" to={"/"}>
-                            <img src="https://muc.edu.eg/assets/img/logo.png"
-                                 alt="Logo" className="w-full"/></Link>
-                        <h1 className="text-5xl font-medium text-base-content/50">
-                            Online Tests
-                        </h1>
-
-                        <div className=" hidden w-full  lg:block"><img
-                            src="https://dt2sdf0db8zob.cloudfront.net/wp-content/uploads/2020/02/form-builders-11.webp"
-                            alt="Cover Image"
-                            className="w-full"/></div>
-                    </div>
-                </div>
+                </>
             )}
 
             {start && (
@@ -283,7 +294,7 @@ const  QuizComponent:React.FC<Props> = ({
                     questions={questions}
                     showDefaultResult={showDefaultResult}
                     onComplete={onComplete}
-                    customResultPage={customResultPage}
+                    // customResultPage={customResultPage}
                     showInstantFeedback={showInstantFeedback}
                     continueTillCorrect={continueTillCorrect}
                     revealAnswerOnSubmit={revealAnswerOnSubmit}
@@ -292,6 +303,7 @@ const  QuizComponent:React.FC<Props> = ({
                     onQuestionSubmit={onQuestionSubmit}
                     timer={timer}
                     allowPauseTimer={allowPauseTimer}
+                    endExam={endExam}
                 />
             )}
         </div>
